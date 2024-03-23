@@ -1,33 +1,11 @@
-class EventEmitter {
-    constructor() {
-        this.events = {};
-    }
+const Emitter = require("./emitter");
+const eventConfig = require("./config").event;
 
-    on(eventName, callback) {
-        if (this.events[eventName]) {
-            this.events[eventName].push(callback);
-        } else {
-            this.events[eventName] = [callback];
-        }
-    }
+const emitter = new Emitter();
 
-    trigger(eventName) {
-        if (this.events[eventName]) {
-            this.events[eventName].forEach(cb => {
-                cb();
-            });
-        } else {
-            console.log('No event exists')
-        }
-    }
-}
-
-let ee = new EventEmitter();
-ee.on('change', () => {
-    console.log('Change Event 1');
+emitter.on(eventConfig.GREET, function ({ data }) {
+  console.log("greet hello world");
+  console.log(data);
 });
 
-ee.on('change', () => {
-    console.log('Change Event 2');
-});
-ee.trigger('change');
+emitter.emit(eventConfig.GREET, { data: "Hello Adi" });
