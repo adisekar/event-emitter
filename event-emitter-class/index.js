@@ -1,33 +1,19 @@
-class EventEmitter {
-    constructor() {
-        this.events = {};
-    }
+const EventEmitter = require("./emitter");
 
-    on(eventName, callback) {
-        if (this.events[eventName]) {
-            this.events[eventName].push(callback);
-        } else {
-            this.events[eventName] = [callback];
-        }
-    }
+class MyGreeter extends EventEmitter {
+  constructor() {
+    super();
+  }
 
-    trigger(eventName) {
-        if (this.events[eventName]) {
-            this.events[eventName].forEach(cb => {
-                cb();
-            });
-        } else {
-            console.log('No event exists')
-        }
-    }
+  // similar to prototype greet methid
+  greet() {
+    console.log("Class Greet method");
+    this.trigger("change");
+  }
 }
 
-let ee = new EventEmitter();
-ee.on('change', () => {
-    console.log('Change Event 1');
+const myGreeter = new MyGreeter();
+myGreeter.on("change", () => {
+  console.log("My Greeter change Event 1");
 });
-
-ee.on('change', () => {
-    console.log('Change Event 2');
-});
-ee.trigger('change');
+myGreeter.greet();
